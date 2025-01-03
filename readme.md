@@ -30,15 +30,15 @@ Figure 1. Process of creating a volume with the QNAP CSI driver.
 <a name="Software-Prerequisites"></a> 
 ## Software Prerequisites  
 ### CSI Driver Version and Compatibility  
-| **Driver Version** | **Supported Kubernetes Versions** | **Supported QNAP NAS Operating Systems**                |  
+| **Driver Version** | **Supported Kubernetes Versions** | **Supported QNAP NAS Operating Systems**                |
 |------------------- | --------------------------------- | ------------------------------------- | 
 | v1.3.0             | v1.24 to v1.30                    | QTS 5.0.0 or later<br>QuTS hero h5.0.0 or later|
  
 ### Supported Host Operating Systems  
-- Debian 8 or later  
-- Ubuntu 16.04 or later  
-- CentOS 7.0 or later  
-- RHEL 7.0 or later  
+- Debian 8 or later
+- Ubuntu 16.04 or later
+- CentOS 7.0 or later
+- RHEL 7.0 or later
 - CoreOS 1353.8.0 or later
 
 ### Supported Platforms
@@ -79,32 +79,38 @@ Figure 1. Process of creating a volume with the QNAP CSI driver.
     ``` 
     kubectl version 
     ``` 
-    Verify that both commands return expected results without errors.
+    Verify that both commands return expected results without errors. See
+    [here](#csi-driver-version-and-compatibility) for a list of Kubernetes
+    version supported by each driver version.
 
 * Make sure that you are logged in as a Kubernetes cluster administrator.
     ``` 
     kubectl auth can-i '*' '*' --all-namespaces 
     ``` 
-    The command should return `yes`. 
+    The command should return `yes`.
 
 * Verify that you can launch a pod using an image from Docker Hub and check connectivity to the storage system over the pod network.
     ``` 
     kubectl run -i --tty ping --image=busybox --restart=Never --rm -- \ping <NAS management IP> 
     ``` 
-    For example: `kubectl run -i --tty ping --image=busybox --restart=Never --rm -- \ping 8.8.8.8`  
+    For example: `kubectl run -i --tty ping --image=busybox --restart=Never --rm -- \ping 8.8.8.8`
     A successful test will display packet responses, indicating connectivity. The pod will automatically delete itself after completion.
 </details>
 
 ### Install the QNAP CSI Plugin 
-1. Clone the git repository.  
+1. Clone the git repository:
     ``` 
-    sudo git clone https://github.com/qnap-dev/QNAP-CSI-PlugIn.git 
+    git clone https://github.com/qnap-dev/QNAP-CSI-PlugIn.git 
     ``` 
-2. Navigate to the directory. 
+1. Navigate to the directory:
     ``` 
     cd QNAP-CSI-PlugIn 
     ``` 
-3. Choose one of the following installation methods. 
+1. Checkout the version you want to install, e.g. v1.3.0:
+    ```
+    git checkout v1.3.0
+    ```
+1. Choose one of the following installation methods. 
  
     * Installing via kubectl 
 
@@ -122,8 +128,8 @@ Figure 1. Process of creating a volume with the QNAP CSI driver.
       kubectl apply -f Deploy/Trident/tridentorchestrator.yaml 
       ``` 
  
-    * Installing via Kustomize  
-      
+    * Installing via Kustomize 
+
       Execute the following commands in order:
       ``` 
       kubectl apply -k Deploy/crds 
@@ -133,16 +139,16 @@ Figure 1. Process of creating a volume with the QNAP CSI driver.
       ``` 
  
     * Installing via Helm   
-      1. Install Helm. 
+      1. Install Helm: 
 
           Please refer to the [Helm Installation Guide](https://helm.sh/docs/intro/install/) for instructions.
 
-      2. Install the CSI plugin. 
+      1. Install the CSI plugin:
           ``` 
           helm install qnap-trident ./Helm/trident -n trident --create-namespace 
           ``` 
 
-       3. Upgrade the plugin.
+      1. Upgrade the plugin:
           ```
           helm upgrade qnap-trident Helm/trident/ -n trident
           ```
